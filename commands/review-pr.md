@@ -12,6 +12,7 @@ Help me review this pull request: $ARGUMENTS
    - Get PR details, description, and metadata
    - View the diff and changed files
    - Extract the PR number from the URL or arguments
+   - Check GitHub Actions status for tests and linting
 
 2. **Checkout the branch locally** for deeper context:
    - Use `gh pr checkout` to check out the PR branch
@@ -19,6 +20,7 @@ Help me review this pull request: $ARGUMENTS
 
 3. **Provide comprehensive review**:
    - Summarize what the PR does
+   - Report on GitHub Actions status (tests, linting, build)
    - Assess code quality and best practices
    - Identify potential issues or bugs
    - Suggest improvements
