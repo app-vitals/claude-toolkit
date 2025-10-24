@@ -13,6 +13,7 @@ Help me review this pull request: $ARGUMENTS
    - View the diff and changed files
    - Extract the PR number from the URL or arguments
    - Check GitHub Actions status for tests and linting
+   - Review existing comments and discussions on the PR
 
 2. **Checkout the branch locally** for deeper context:
    - Use `gh pr checkout` to check out the PR branch
