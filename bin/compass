@@ -1,0 +1,162 @@
+#!/usr/bin/env bash
+
+set -e
+
+COMPASS_VERSION="0.1.0"
+CLAUDE_CONFIG="$HOME/.claude"
+
+# Colors for output
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+# Get script directory (handles both local and Homebrew installs)
+if [ -L "$0" ]; then
+  SCRIPT_PATH="$(readlink "$0")"
+else
+  SCRIPT_PATH="$0"
+fi
+SCRIPT_DIR="$( cd "$( dirname "$SCRIPT_PATH" )" && cd .. && pwd )"
+TEMPLATES_DIR="$SCRIPT_DIR/templates"
+
+install_compass() {
+  echo -e "${BLUE}Installing Compass for Claude Code...${NC}"
+  echo ""
+
+  # Check if Claude is available
+  if ! command -v claude &> /dev/null; then
+    echo -e "${YELLOW}Warning: Claude not found${NC}"
+    echo "Download from: https://www.anthropic.com/claude/download"
+    echo ""
+  fi
+
+  # Create directories
+  mkdir -p "$CLAUDE_CONFIG/output-styles"
+  mkdir -p "$CLAUDE_CONFIG/commands"
+
+  # Check if templates exist
+  if [ ! -d "$TEMPLATES_DIR" ]; then
+    echo -e "${RED}Error: Templates directory not found at $TEMPLATES_DIR${NC}"
+    exit 1
+  fi
+
+  # Install output style
+  if [ -f "$TEMPLATES_DIR/output-style.md" ]; then
+    cp "$TEMPLATES_DIR/output-style.md" "$CLAUDE_CONFIG/output-styles/compass.md"
+    echo -e "${GREEN}✓${NC} Installed Compass output style"
+  else
+    echo -e "${RED}Error: output-style.md not found${NC}"
+    exit 1
+  fi
+
+  # Install slash command
+  if [ -f "$TEMPLATES_DIR/distill.md" ]; then
+    cp "$TEMPLATES_DIR/distill.md" "$CLAUDE_CONFIG/commands/distill.md"
+    echo -e "${GREEN}✓${NC} Installed /distill command"
+  else
+    echo -e "${RED}Error: distill.md not found${NC}"
+    exit 1
+  fi
+
+  echo ""
+  echo -e "${GREEN}Compass installed successfully!${NC}"
+  echo ""
+  echo "Get started:"
+  echo "  cd your-project"
+  echo "  compass"
+}
+
+
+start_compass() {
+  # Check if Claude is installed
+  if ! command -v claude &> /dev/null; then
+    echo -e "${RED}Error: Claude not found${NC}"
+    echo ""
+    echo "Install Claude from:"
+    echo "  https://www.anthropic.com/claude/download"
+    echo ""
+    exit 1
+  fi
+
+  # Check if Compass is installed
+  if [ ! -f "$CLAUDE_CONFIG/output-styles/compass.md" ]; then
+    echo -e "${YELLOW}Compass not installed. Installing now...${NC}"
+    echo ""
+    install_compass
+    echo ""
+  fi
+
+  # Inject today's date into output style
+  TODAY=$(date +%Y-%m-%d)
+  TEMP_STYLE="/tmp/compass-style-$$.md"
+  sed "s/{DATE}/$TODAY/g" "$CLAUDE_CONFIG/output-styles/compass.md" > "$TEMP_STYLE"
+  cp "$TEMP_STYLE" "$CLAUDE_CONFIG/output-styles/compass.md"
+  rm "$TEMP_STYLE"
+
+  # Start Claude with Compass output style
+  echo -e "${BLUE}Starting Compass...${NC}"
+  echo ""
+  exec claude "/output-style compass" "$@"
+}
+
+show_version() {
+  echo "Compass v$COMPASS_VERSION"
+  echo "Execution efficiency assistant for Claude Code"
+}
+
+show_help() {
+  cat << EOF
+${BLUE}Compass${NC} - Execution Efficiency Assistant for Claude Code
+
+${YELLOW}Usage:${NC}
+  compass              Start Compass in current project
+  compass install      Install Compass for Claude Code
+  compass version      Show version
+  compass help         Show this help
+
+${YELLOW}Getting Started:${NC}
+  ${GREEN}# In any project directory${NC}
+  cd ~/src/my-project
+  compass              # Starts Claude Code with Compass output style
+
+  ${GREEN}# During conversation${NC}
+  > what should I work on next?
+  > /distill           # Creates/updates context from conversation
+  > /clear             # Clear conversation history
+
+${YELLOW}Context:${NC}
+  Context is created automatically when you run /distill
+  - context/           # Created on first distillation
+  - context/index.md   # Overview of context files
+  - context/*.md       # Context files (goals, business, strategy, etc.)
+  - context-archive/   # Archived sessions
+
+${YELLOW}Learn more:${NC}
+  https://github.com/yourusername/compass
+EOF
+}
+
+# Main command router
+case "${1:-start}" in
+  install)
+    install_compass
+    ;;
+  version|--version|-v)
+    show_version
+    ;;
+  help|--help|-h)
+    show_help
+    ;;
+  start|"")
+    shift || true
+    start_compass "$@"
+    ;;
+  *)
+    echo -e "${RED}Unknown command: $1${NC}"
+    echo ""
+    echo "Run 'compass help' for usage."
+    exit 1
+    ;;
+esac
