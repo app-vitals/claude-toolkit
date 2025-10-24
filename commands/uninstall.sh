@@ -35,6 +35,19 @@ for cmd in "$SCRIPT_DIR"/*.md; do
   fi
 done
 
+# Remove CLI wrappers
+if [ -d "$SCRIPT_DIR/bin" ]; then
+  for wrapper in "$SCRIPT_DIR/bin"/*; do
+    if [ -f "$wrapper" ]; then
+      wrapper_name=$(basename "$wrapper")
+      if [ -L ~/.local/bin/"$wrapper_name" ]; then
+        rm ~/.local/bin/"$wrapper_name"
+        echo -e "${GREEN}✓${NC} Removed $wrapper_name from ~/.local/bin"
+      fi
+    fi
+  done
+fi
+
 echo ""
 if [ $REMOVED_COUNT -eq 0 ]; then
   echo -e "${YELLOW}No commands found to remove${NC}"

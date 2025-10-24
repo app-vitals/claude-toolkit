@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Colors for output
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+# Check if Claude is installed
+if ! command -v claude &> /dev/null; then
+  echo -e "${RED}Error: Claude not found${NC}"
+  echo ""
+  echo "Install Claude from:"
+  echo "  https://www.anthropic.com/claude/download"
+  echo ""
+  exit 1
+fi
+
+# Check if PR URL/number provided
+if [ -z "$1" ]; then
+  echo -e "${RED}Error: No PR URL or number provided${NC}"
+  echo ""
+  echo "Usage:"
+  echo "  review-pr https://github.com/owner/repo/pull/123"
+  echo "  review-pr 123  (in a git repository)"
+  echo ""
+  exit 1
+fi
+
+# Start Claude with review-pr command
+echo -e "${BLUE}Starting PR review...${NC}"
+echo ""
+exec claude "/review-pr $*"

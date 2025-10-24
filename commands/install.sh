@@ -37,6 +37,28 @@ for cmd in "$SCRIPT_DIR"/*.md; do
   fi
 done
 
+# Install CLI wrappers
+mkdir -p ~/.local/bin
+
+if [ -d "$SCRIPT_DIR/bin" ]; then
+  for wrapper in "$SCRIPT_DIR/bin"/*; do
+    if [ -f "$wrapper" ]; then
+      wrapper_name=$(basename "$wrapper")
+      chmod +x "$wrapper"
+      ln -sf "$wrapper" ~/.local/bin/"$wrapper_name"
+      echo -e "${GREEN}✓${NC} Linked $wrapper_name to ~/.local/bin"
+    fi
+  done
+fi
+
+# Check if ~/.local/bin is in PATH
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+  echo ""
+  echo -e "${YELLOW}Note: Add ~/.local/bin to your PATH${NC}"
+  echo "  Add to ~/.zshrc or ~/.bashrc:"
+  echo "  export PATH=\"\$HOME/.local/bin:\$PATH\""
+fi
+
 echo ""
 if [ $INSTALLED_COUNT -eq 0 ]; then
   echo -e "${YELLOW}No commands found to install${NC}"

@@ -21,9 +21,12 @@ Compass provides:
 Standalone slash commands for Claude Code.
 
 Available commands:
-- `/review-pr` - Comprehensive GitHub PR review with local checkout
+- `review-pr <url>` - Comprehensive GitHub PR review with local checkout
 
-[Learn more →](./commands/README.md)
+**Usage:**
+```bash
+review-pr https://github.com/owner/repo/pull/123
+```
 
 ## Installation
 
