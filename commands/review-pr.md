@@ -12,7 +12,7 @@ Help me review this pull request: $ARGUMENTS
    - Get PR details, description, and metadata
    - View the diff and changed files
    - Extract the PR number from the URL or arguments
-   - Check GitHub Actions status for tests and linting
+   - Check GitHub Actions status for tests and linting (no need to run locally)
    - Review existing comments and discussions on the PR
 
 2. **Checkout the branch locally** for deeper context:
