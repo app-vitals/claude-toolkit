@@ -15,17 +15,9 @@ Compass is a lightweight configuration layer for [Claude Code](https://www.anthr
 
 ## Installation
 
-### Homebrew (Coming Soon)
-
 ```bash
-brew install yourusername/tap/compass
-```
-
-### Manual Installation
-
-```bash
-git clone https://github.com/yourusername/compass.git
-cd compass
+git clone https://github.com/app-vitals/claude-toolkit.git
+cd claude-toolkit/compass
 ./install.sh
 ```
 

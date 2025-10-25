@@ -220,13 +220,6 @@ compass              # Start Claude Code with Compass output style
 compass install      # Install Compass configuration for Claude Code
 ```
 
-**Installation via Homebrew:**
-```bash
-brew install compass
-cd your-project
-compass
-```
-
 ## Implementation Philosophy
 
 ### Start Simple, Iterate

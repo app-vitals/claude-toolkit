@@ -11,7 +11,6 @@ Build Compass as an ultra-lightweight configuration layer for Claude Code, focus
 - Add `/distill` slash command for context management
 - On-demand context loading via Read tool
 - Simple CLI wrapper for convenience
-- Distribute via Homebrew
 
 **Key Innovation:**
 - **Zero setup** - Just start talking
@@ -186,7 +185,6 @@ From the original plan, we eliminated:
 
 ### Distribution Goals
 
-- [ ] Homebrew formula published
 - [ ] Installation < 1 minute
 - [ ] Works on macOS and Linux
 - [ ] Clear documentation
@@ -247,7 +245,7 @@ compass diff            # Show context changes since last distill
 | CLI | Custom prompt_toolkit | Claude Code's CLI |
 | Tools | Custom implementations | Claude Code's tools |
 | Updates | Manual | Automatic from Claude Code |
-| Distribution | Python package | Homebrew (config files) |
+| Distribution | Python package | Git clone (config files) |
 
 ---
 
@@ -276,7 +274,6 @@ All core functionality implemented:
 
 Ready for:
 - Testing with real projects
-- Homebrew formula creation
 - Community feedback
 - Iteration based on usage
 
