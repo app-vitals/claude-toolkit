@@ -29,6 +29,7 @@ Standalone slash commands that add functionality to Claude Code.
 
 **Current commands:**
 - `/review-pr` - Reviews GitHub PRs using `gh` CLI, saves output to `PR_REVIEW_{number}.md`
+- `/review-pr-update` - Updates an existing PR review with latest changes, saves to `PR_REVIEW_{number}_UPDATE.md` (designed to run in same conversation as original review)
 
 **Extension pattern:**
 - Commands are `.md` files with frontmatter (`description:`) and prompt text

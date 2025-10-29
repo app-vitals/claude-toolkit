@@ -22,10 +22,13 @@ Standalone slash commands for Claude Code.
 
 Available commands:
 - `review-pr <url>` - Comprehensive GitHub PR review with local checkout
+- `review-pr-update <url>` - Update an existing review with latest PR changes (use in same conversation)
 
 **Usage:**
 ```bash
 review-pr https://github.com/owner/repo/pull/123
+# ... PR is updated ...
+review-pr-update https://github.com/owner/repo/pull/123
 ```
 
 ## Installation
